@@ -3,9 +3,6 @@ import cors from 'cors';
 import path from 'path';
 import os from 'os';
 import { 
-  Item, 
-  ItemCreateRequest, 
-  ItemUpdateRequest, 
   LogMessage, 
   SystemMetrics, 
   ApiResponse 
@@ -20,30 +17,6 @@ app.use(cors());
 // Parse JSON payloads
 app.use(express.json());
 
-// In-Memory Database (Boilerplate Sample Data)
-let items: Item[] = [
-  {
-    id: '1',
-    name: 'Shared Workspace Package',
-    description: 'Shared TypeScript model definitions located under the shared/ directory.',
-    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString()
-  },
-  {
-    id: '2',
-    name: 'Express API Server',
-    description: 'Node.js Express application in backend/ hosting REST endpoints and serving static files.',
-    createdAt: new Date(Date.now() - 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000).toISOString()
-  },
-  {
-    id: '3',
-    name: 'Angular SPA Client',
-    description: 'Single Page Application in frontend/ built with standalone components and Signals routing.',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
 
 let requestCount = 0;
 const logs: LogMessage[] = [];
@@ -77,72 +50,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // --- API ROUTES ---
 
-// GET /api/items
-app.get('/api/items', (req: Request, res: Response<ApiResponse<Item[]>>) => {
-  res.json({ success: true, data: items });
-});
 
-// POST /api/items
-app.post('/api/items', (req: Request, res: Response<ApiResponse<Item>>) => {
-  const body = req.body as ItemCreateRequest;
-  
-  if (!body.name || !body.description) {
-    log('warn', 'Failed item creation: Missing name or description.');
-    return res.status(400).json({ 
-      success: false, 
-      error: 'Name and description are required.' 
-    });
-  }
-
-  const newItem: Item = {
-    id: Math.random().toString(36).substring(2, 9),
-    name: body.name,
-    description: body.description,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  };
-
-  items.push(newItem);
-  log('info', `Item created: "${newItem.name}" (ID: ${newItem.id})`);
-  res.status(201).json({ success: true, data: newItem });
-});
-
-// PUT /api/items/:id
-app.put('/api/items/:id', (req: Request, res: Response<ApiResponse<Item>>) => {
-  const { id } = req.params;
-  const body = req.body as ItemUpdateRequest;
-  const itemIndex = items.findIndex(i => i.id === id);
-
-  if (itemIndex === -1) {
-    log('warn', `Failed item update: Item with ID ${id} not found.`);
-    return res.status(404).json({ success: false, error: 'Item not found.' });
-  }
-
-  const updatedItem: Item = {
-    ...items[itemIndex],
-    ...body,
-    updatedAt: new Date().toISOString()
-  };
-
-  items[itemIndex] = updatedItem;
-  log('info', `Item updated: "${updatedItem.name}" (ID: ${id})`);
-  res.json({ success: true, data: updatedItem });
-});
-
-// DELETE /api/items/:id
-app.delete('/api/items/:id', (req: Request, res: Response<ApiResponse<null>>) => {
-  const { id } = req.params;
-  const itemIndex = items.findIndex(i => i.id === id);
-
-  if (itemIndex === -1) {
-    log('warn', `Failed item deletion: Item with ID ${id} not found.`);
-    return res.status(404).json({ success: false, error: 'Item not found.' });
-  }
-
-  const deletedItem = items.splice(itemIndex, 1)[0];
-  log('info', `Item deleted: "${deletedItem.name}" (ID: ${id})`);
-  res.json({ success: true });
-});
 
 // GET /api/metrics
 app.get('/api/metrics', (req: Request, res: Response<ApiResponse<SystemMetrics>>) => {

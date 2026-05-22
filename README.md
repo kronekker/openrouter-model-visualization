@@ -1,13 +1,13 @@
-# Unified TypeScript Workspace: Angular + Node.js Boilerplate
+# Angular + Node.js Project Template
 
-A unified, strictly typed development template combining an **Angular SPA** (frontend) and a **Node.js Express API** (backend), linked via a **Shared TypeScript Models** package in an npm monorepo workspace.
+A strictly typed development template combining an **Angular SPA** (frontend) and a **Node.js Express API** (backend), linked via a **Shared TypeScript Models** package in an npm monorepo workspace.
 
 ## Key Features
 
 - **End-to-End Type Safety**: Share TypeScript contracts (`shared`) between client and server. Modifying an interface immediately flags compilations errors on both sides if out of sync.
 - **Concurrent Development**: Single command (`npm run dev`) launches both Express backend (with `tsx` hot reloading) and the Angular dev server (with HMR and proxy configurations).
 - **Environment Synced Port**: Run both backend and frontend proxy on a custom port using a single command: `PORT=3005 npm run dev`.
-- **Single-Artifact Deployments**: Compile the Angular client into static assets and compile Express into vanilla JS. Run the entire fullstack app via a single Node.js process (`node dist/server.js`), serving both static files and API endpoints.
+- **Single-Artifact Deployments**: Compile the Angular client into static assets and compile Express into vanilla JS. Run the entire fullstack app via a single Node.js process (`node dist/server.`), serving both static files and API endpoints.
 
 ---
 
