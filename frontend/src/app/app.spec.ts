@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { ApiService } from './api.service';
 import { of } from 'rxjs';
 
@@ -37,15 +37,35 @@ describe('App', () => {
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(App);
+    const httpMock = TestBed.inject(HttpTestingController);
+    
+    // Trigger lifecycle hooks
+    fixture.detectChanges();
+    
+    // Resolve the branding config HTTP call
+    const req = httpMock.expectOne('/config.json');
+    req.flush({ logoAccent: 'DEFAULT', logoThin: 'app' });
+    
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
+    httpMock.verify();
   });
 
   it('should render brand logo', async () => {
     const fixture = TestBed.createComponent(App);
+    const httpMock = TestBed.inject(HttpTestingController);
+    
+    fixture.detectChanges();
+    
+    const req = httpMock.expectOne('/config.json');
+    req.flush({ logoAccent: 'TESTACCENT', logoThin: 'testthin' });
+    
     fixture.detectChanges();
     await fixture.whenStable();
+    
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.logo-accent')?.textContent).toContain('KRONEKKER');
+    expect(compiled.querySelector('.logo-accent')?.textContent).toContain('TESTACCENT');
+    expect(compiled.querySelector('.logo-thin')?.textContent).toContain('testthin');
+    httpMock.verify();
   });
 });

@@ -2,9 +2,15 @@
   <div class="section-title-wrapper">
     <h2 class="section-title">Telemetry & System Metrics</h2>
     
-    <!-- Local Route Status Badge -->
-    <div class="status-connection-badge" [ngClass]="serverConnected() ? 'badge-online' : 'badge-offline'">
-      {{ serverConnected() ? 'Telemetry Streaming (Port ' + (metrics()?.port || '...') + ')' : 'Reconnecting...' }}
+    <!-- Local Route Status Controls -->
+    <div class="status-controls" style="display: flex; align-items: center; gap: 1rem;">
+      <label class="auto-refresh-toggle" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); cursor: pointer; font-size: 0.85rem;">
+        <input type="checkbox" [checked]="autoRefresh()" (change)="toggleAutoRefresh($event)">
+        Auto-Refresh
+      </label>
+      <div class="status-connection-badge" [ngClass]="serverConnected() ? 'badge-online' : 'badge-offline'">
+        {{ serverConnected() ? (autoRefresh() ? 'Telemetry Streaming (Port ' + (metrics()?.port || '...') + ')' : 'API Connected (Port ' + (metrics()?.port || '...') + ')') : 'Reconnecting...' }}
+      </div>
     </div>
   </div>
 
@@ -12,7 +18,7 @@
     <!-- Left Column: Metrics Gauges -->
     <div class="metrics-column">
       <!-- CPU Card -->
-      <div class="telemetry-card glass-panel">
+      <div class="telemetry-card kbp-glass-panel">
         <div class="card-header-simple">
           <h3>CPU Usage</h3>
           <span class="stat-number font-mono" *ngIf="metrics()">{{ metrics()?.cpuUsage }}%</span>
@@ -25,7 +31,7 @@
       </div>
 
       <!-- Memory Card -->
-      <div class="telemetry-card glass-panel">
+      <div class="telemetry-card kbp-glass-panel">
         <div class="card-header-simple">
           <h3>Memory Load (RAM)</h3>
           <span class="stat-number font-mono" *ngIf="metrics()">{{ metrics()?.memoryUsage }}%</span>
@@ -41,7 +47,7 @@
       </div>
 
       <!-- Quick Metrics Telemetry -->
-      <div class="telemetry-card glass-panel">
+      <div class="telemetry-card kbp-glass-panel">
         <div class="card-header-simple">
           <h3>Backend Telemetry</h3>
         </div>
@@ -72,7 +78,7 @@
 
     <!-- Right Column: Terminal Logs -->
     <div class="logs-column">
-      <div class="logs-card glass-panel">
+      <div class="logs-card kbp-glass-panel">
         <div class="logs-header">
           <div class="terminal-dots">
             <span class="dot-red"></span>

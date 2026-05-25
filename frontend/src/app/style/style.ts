@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-style',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './home.html',
-  styleUrl: './home.css'
+  templateUrl: './style.html',
+  styleUrl: './style.css'
 })
-export class HomeComponent { }
+export class StyleComponent {
+}

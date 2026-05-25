@@ -15,22 +15,41 @@ export class StatusComponent implements OnInit, OnDestroy {
 
   metrics = signal<SystemMetrics | null>(null);
   serverConnected = signal<boolean>(false);
-  
+  autoRefresh = signal<boolean>(false);
   private metricsIntervalId: any;
 
   ngOnInit() {
     this.loadMetrics();
+  }
+
+  toggleAutoRefresh(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.autoRefresh.set(isChecked);
     
-    // Poll telemetry data every 2 seconds
-    this.metricsIntervalId = setInterval(() => {
-      this.loadMetrics();
-    }, 2000);
+    if (isChecked) {
+      this.startInterval();
+    } else {
+      this.stopInterval();
+    }
+  }
+
+  private startInterval() {
+    if (!this.metricsIntervalId) {
+      this.metricsIntervalId = setInterval(() => {
+        this.loadMetrics();
+      }, 2000);
+    }
+  }
+
+  private stopInterval() {
+    if (this.metricsIntervalId) {
+      clearInterval(this.metricsIntervalId);
+      this.metricsIntervalId = null;
+    }
   }
 
   ngOnDestroy() {
-    if (this.metricsIntervalId) {
-      clearInterval(this.metricsIntervalId);
-    }
+    this.stopInterval();
   }
 
   loadMetrics() {

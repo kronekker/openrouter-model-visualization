@@ -1,59 +1,30 @@
-# Frontend
+# Kronekker Frontend Boilerplate
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+This directory contains the Angular Standalone SPA application of the Kronekker monorepo. It is specifically designed to tightly integrate with the local Node.js backend and shared type definitions.
 
-## Development server
+## Architectural Constraints & Flows
 
-To start a local development server, run:
+When developing within this workspace, please adhere to the following standards established for this boilerplate:
 
+1. **Standalone Components Only**: All new Angular components must be generated as `standalone: true`. We do not use `NgModule`. Register new routes directly in `src/app/app.routes.ts`.
+2. **Kronekker Design System (`kbp-`)**: Do not write arbitrary or inline CSS for standard UI elements (like cards, buttons, badges, or inputs). You must use the `kbp-` (Kronekker Boilerplate Prefix) classes globally defined in `src/styles.css`. View the UI Kit (the `/style` route) for examples.
+3. **API Proxying**: The Angular dev server uses `proxy.conf.js` to automatically map any requests made to `/api/*` directly to the local backend API. **Never hardcode absolute URLs** (e.g., `http://localhost:3000/api`) into Angular services.
+4. **Shared Types**: Always import interfaces directly from the `shared` workspace package (e.g., `import { ServerMetrics } from 'shared';`) rather than defining local typings for backend payloads.
+
+## Development Orchestration
+
+Because this frontend is deeply coupled to the backend, **do not run `ng serve` or `ng build` directly from this directory**. 
+
+All orchestration is handled from the root of the repository.
+
+To run the development server with hot-reloading:
 ```bash
-ng serve
+cd ..
+npm run dev
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+To build the frontend application into production-ready static assets:
 ```bash
-ng generate component component-name
+cd ..
+npm run build
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

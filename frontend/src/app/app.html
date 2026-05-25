@@ -1,18 +1,23 @@
 <div class="dashboard-wrapper">
   <!-- Top Navigation Header -->
-  <header class="dashboard-header glass-panel">
+  <header class="dashboard-header kbp-glass-panel">
     <div class="header-left">
       <div class="header-logo" routerLink="/">
-        <span class="logo-accent">KRONEKKER</span>
-        <span class="logo-thin">console</span>
+        <img *ngIf="branding().useImageLogo" src="/logo.png" alt="Kronekker Logo" style="height: 32px; width: auto;" />
+        <ng-container *ngIf="!branding().useImageLogo">
+          <span class="logo-accent">{{ branding().logoAccent }}</span>
+          <span class="logo-thin">{{ branding().logoThin }}</span>
+        </ng-container>
       </div>
-      
-      <nav class="header-nav">
+
+      <nav class="kbp-nav">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
         <a routerLink="/status" routerLinkActive="active" class="nav-link">Status</a>
+        <a routerLink="/features" routerLinkActive="active" class="nav-link">Features</a>
+        <a routerLink="/style" routerLinkActive="active" class="nav-link">UI Kit</a>
       </nav>
     </div>
-    
+
     <div class="header-status">
       <!-- Live API Connection Glow Badge -->
       <div class="status-indicator" [ngClass]="serverConnected() ? 'status-online' : 'status-offline'">
@@ -29,4 +34,3 @@
     <router-outlet></router-outlet>
   </main>
 </div>
-
