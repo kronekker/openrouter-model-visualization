@@ -254,6 +254,12 @@ select:focus,
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
+.kbp-badge-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
 /* Banner Styling */
 .kbp-banner {
   display: flex;
@@ -295,4 +301,115 @@ select:focus,
 .kbp-nav a:hover,
 .kbp-nav a.active {
   color: var(--text-primary);
+}
+
+/* --- Global Layout & Containers --- */
+.kbp-page-container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Typography Helpers */
+.kbp-section-title-wrapper {
+  margin-bottom: 2rem;
+}
+
+.kbp-section-title {
+  /* Inherits from global heading styles, ready for further customization */
+}
+
+.kbp-subtitle {
+  font-size: 1.15rem;
+  max-width: 600px;
+}
+
+/* Hero Section Utilities */
+.kbp-hero-card {
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(99, 102, 241, 0.05));
+}
+
+.kbp-hero-card h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.kbp-hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Grid & Cards Utilities */
+.kbp-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .kbp-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kbp-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.kbp-card-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.kbp-card-content p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.kbp-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--primary-glow);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 1px solid var(--glass-border);
+}
+
+/* Section & Layout Helpers */
+.kbp-section {
+  margin-bottom: 3rem;
+}
+
+.kbp-section-header {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 0.5rem;
+}
+
+.kbp-row {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem;
+  align-items: center;
 }

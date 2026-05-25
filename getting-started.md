@@ -25,6 +25,20 @@ cd template-project
 bun install
 ```
 
+### Pointing to Your Own Repository
+To use this boilerplate as the foundation for your own project, you should change the git `origin` to point to your own repository so you can commit and push your changes.
+
+```bash
+# 1. Remove the existing boilerplate remote
+git remote remove origin
+
+# 2. Add your new repository as the origin
+git remote add origin https://github.com/your-username/your-new-repo.git
+
+# 3. Push the starter code to your new repository
+git push -u origin main
+```
+
 ### Smoke Test (Development Mode)
 Launch the development environment to verify everything is working. This runs both the Express backend and the Angular frontend in hot-reload mode concurrently.
 

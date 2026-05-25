@@ -16,6 +16,8 @@ This boilerplate utilizes an npm workspace (monorepo) structure containing three
 
 By unifying these environments, a developer can define an interface in the `shared` package (e.g., `ServerMetrics`), implement the API endpoint returning that type in the `backend`, and safely consume it in the `frontend`—knowing that any breaking change will instantly trigger compilation errors across the entire stack.
 
+This shared boundary establishes a strict, verifiable contract across the stack. For developers, it eliminates integration guesswork by surfacing payload mismatches as compile-time errors rather than runtime bugs. For AI coding agents, these centralized definitions provide reliable, cross-stack context, allowing them to confidently orchestrate and verify full-stack features automatically. For smaller projects, this overhead might seem unnecessary, but for larger projects with a team of developers, it can save a lot of time and effort, and makes inspecting code and seeing type definitions easier through intelligent IDEs. Furthermore, the use of an npm workspace allows for seamless management of dependencies across the entire stack.    
+
 ---
 
 ## ✨ Standardized Features out of the Box

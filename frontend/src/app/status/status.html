@@ -1,6 +1,6 @@
-<div class="status-container">
-  <div class="section-title-wrapper">
-    <h2 class="section-title">Telemetry & System Metrics</h2>
+<div class="kbp-page-container" style="gap: 1.5rem;">
+  <div class="kbp-section-title-wrapper">
+    <h2 class="kbp-section-title">Telemetry & System Metrics</h2>
     
     <!-- Local Route Status Controls -->
     <div class="status-controls" style="display: flex; align-items: center; gap: 1rem;">
@@ -8,7 +8,7 @@
         <input type="checkbox" [checked]="autoRefresh()" (change)="toggleAutoRefresh($event)">
         Auto-Refresh
       </label>
-      <div class="status-connection-badge" [ngClass]="serverConnected() ? 'badge-online' : 'badge-offline'">
+      <div class="kbp-badge" [ngClass]="serverConnected() ? 'kbp-badge-done' : 'kbp-badge-danger'">
         {{ serverConnected() ? (autoRefresh() ? 'Telemetry Streaming (Port ' + (metrics()?.port || '...') + ')' : 'API Connected (Port ' + (metrics()?.port || '...') + ')') : 'Reconnecting...' }}
       </div>
     </div>
@@ -18,7 +18,7 @@
     <!-- Left Column: Metrics Gauges -->
     <div class="metrics-column">
       <!-- CPU Card -->
-      <div class="telemetry-card kbp-glass-panel">
+      <div class="kbp-card-content kbp-glass-panel">
         <div class="card-header-simple">
           <h3>CPU Usage</h3>
           <span class="stat-number font-mono" *ngIf="metrics()">{{ metrics()?.cpuUsage }}%</span>
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Memory Card -->
-      <div class="telemetry-card kbp-glass-panel">
+      <div class="kbp-card-content kbp-glass-panel">
         <div class="card-header-simple">
           <h3>Memory Load (RAM)</h3>
           <span class="stat-number font-mono" *ngIf="metrics()">{{ metrics()?.memoryUsage }}%</span>
@@ -47,7 +47,7 @@
       </div>
 
       <!-- Quick Metrics Telemetry -->
-      <div class="telemetry-card kbp-glass-panel">
+      <div class="kbp-card-content kbp-glass-panel">
         <div class="card-header-simple">
           <h3>Backend Telemetry</h3>
         </div>
