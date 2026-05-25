@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "concurrently --kill-others \"npm run dev -w backend\" \"npm run dev -w frontend\"",
-    "dev:bun": "concurrently --kill-others \"npm run dev:bun -w backend\" \"npm run dev -w frontend\"",
+    "dev:bun": "concurrently \"npm run dev:bun -w backend\" \"npm run dev -w frontend\"",
     "build": "npm run build -w shared && npm run build -w frontend && npm run build -w backend",
     "build:bun": "npm run build -w shared && npm run build -w frontend",
     "start": "npm run start -w backend",
