@@ -83,6 +83,15 @@ npm run test -w backend
 
 ---
 
+## ⚡ Node.js vs Bun
+
+This boilerplate has been engineered to run perfectly under both standard Node.js and the ultra-fast Bun runtime. 
+
+Curious which one you should choose for your team's architecture? Read our detailed breakdown:
+[**Architectural Analysis: Node.js vs Bun**](./bun-or-node.md)
+
+---
+
 ## 🛠 Extension Guide
 
 1. **Updating Types:** Add definitions to `shared/src/index.ts` and run `npm run build -w shared`.

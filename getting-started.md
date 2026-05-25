@@ -4,27 +4,59 @@ Welcome to your new starting point! This guide will take you from a fresh clone 
 
 ## 1. Local Setup & Smoke Testing
 
+This boilerplate supports two execution runtimes: standard **Node.js** or the ultra-fast **Bun** runtime.
+
 ### Clone & Install
-Clone your forked repository and install the workspace dependencies:
+Clone your forked repository and install the workspace dependencies using your preferred runtime.
+
+**Standard (Node.js/npm)**
+*Prerequisite: [Node.js](https://nodejs.org/) (v18+)*
 ```bash
 git clone https://github.com/kronekker/template-project.git
 cd template-project
 npm install
 ```
 
+**Accelerated (Bun)**
+*Prerequisite: [Bun](https://bun.sh/) (v1.0+)*
+```bash
+git clone https://github.com/kronekker/template-project.git
+cd template-project
+bun install
+```
+
 ### Smoke Test (Development Mode)
 Launch the development environment to verify everything is working. This runs both the Express backend and the Angular frontend in hot-reload mode concurrently.
+
+**Standard (Node.js)**
 ```bash
 npm run dev
 ```
+
+**Accelerated (Bun)**
+*(Bun's native `--watch` flag is used for the backend for zero-latency restarts)*
+```bash
+bun run dev:bun
+```
+
 Navigate to `http://localhost:4200`. You should see the Home page. Click "View Server Telemetry" to verify the backend API is connected and streaming data to the frontend.
 
 ### Smoke Test (Production Build)
 To ensure there are no TypeScript interface mismatches or Angular budget errors, compile the entire project and run the unified server:
+
+**Standard (Node.js)**
 ```bash
 npm run build
 npm run start
 ```
+
+**Accelerated (Bun)**
+*(Bun skips backend TypeScript compilation entirely and executes the raw `.ts` files directly in production)*
+```bash
+bun run build:bun
+bun run start:bun
+```
+
 Navigate to `http://localhost:3000`. The Express server is now serving both your static Angular assets and the API endpoints out of a single process on the same port!
 
 ---
