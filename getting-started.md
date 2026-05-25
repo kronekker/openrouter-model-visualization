@@ -9,19 +9,21 @@ This boilerplate supports two execution runtimes: standard **Node.js** or the ul
 ### Clone & Install
 Clone your forked repository and install the workspace dependencies using your preferred runtime.
 
+**Git the code**
+```bash
+git clone https://github.com/kronekker/template-project.git <my-project-name>
+cd <my-project-name>
+```
+
 **Standard (Node.js/npm)**
 *Prerequisite: [Node.js](https://nodejs.org/) (v18+)*
 ```bash
-git clone https://github.com/kronekker/template-project.git
-cd template-project
 npm install
 ```
 
 **Accelerated (Bun)**
 *Prerequisite: [Bun](https://bun.sh/) (v1.0+)*
 ```bash
-git clone https://github.com/kronekker/template-project.git
-cd template-project
 bun install
 ```
 
