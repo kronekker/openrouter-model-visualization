@@ -128,9 +128,17 @@
   border-radius: 50%;
 }
 
-.dot-red { background-color: var(--danger); }
-.dot-yellow { background-color: var(--warning); }
-.dot-green { background-color: var(--success); }
+.dot-red {
+  background-color: var(--danger);
+}
+
+.dot-yellow {
+  background-color: var(--warning);
+}
+
+.dot-green {
+  background-color: var(--success);
+}
 
 .logs-title {
   font-size: 0.75rem;
@@ -175,11 +183,29 @@
   margin-right: 0.5rem;
 }
 
-.log-info { color: #818cf8; }
-.log-info .log-badge { background: rgba(129, 140, 248, 0.15); color: #818cf8; }
+.log-info {
+  color: #818cf8;
+}
 
-.log-warn { color: #fde047; }
-.log-warn .log-badge { background: rgba(253, 224, 71, 0.15); color: #fde047; }
+.log-info .log-badge {
+  background: rgba(129, 140, 248, 0.15);
+  color: #818cf8;
+}
 
-.log-error { color: #fca5a5; }
-.log-error .log-badge { background: rgba(252, 165, 165, 0.15); color: #fca5a5; }
+.log-warn {
+  color: #fde047;
+}
+
+.log-warn .log-badge {
+  background: rgba(253, 224, 71, 0.15);
+  color: #fde047;
+}
+
+.log-error {
+  color: #fca5a5;
+}
+
+.log-error .log-badge {
+  background: rgba(252, 165, 165, 0.15);
+  color: #fca5a5;
+}

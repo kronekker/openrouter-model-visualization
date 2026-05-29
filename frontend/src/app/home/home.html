@@ -1,31 +1,111 @@
 <div class="kbp-page-container">
-  <!-- Hero Section -->
-  <section class="kbp-glass-panel">
-    <h1>Welcome to Your New App</h1>
-    <p class="kbp-subtitle text-secondary" style="max-width: 800px;">
-      This is a <strong>sample Home component</strong> designed to demonstrate the boilerplate's structural layout, global styling system, and the routing navigation bar.
-    </p>
+  <!-- Title section -->
+  <div class="kbp-section-title-wrapper" style="margin-bottom: 2rem;">
+    <h2 class="kbp-section-title" style="font-size: 2.5rem; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">OpenRouter Models Visualization</h2>
+    <p class="kbp-subtitle text-secondary">Analyze and compare context length, pricing metrics, and release timelines of modern Large Language Models (LLMs).</p>
+  </div>
 
-    <!-- Instructional Callout -->
-    <div style="margin: 2.5rem 0; padding: 1.5rem 2rem; border-left: 4px solid var(--accent); background: var(--accent-glow); border-radius: 0 8px 8px 0;">
-      <h3 style="margin-top: 0; color: var(--accent); font-weight: 600; letter-spacing: 0.5px;">Make It Yours</h3>
-      <p style="margin-bottom: 0; line-height: 1.6; color: var(--text-primary);">
-        You are expected to completely replace the contents of this <code>HomeComponent</code> (found in <code>home.html</code> and <code>home.ts</code>) with the actual landing page or dashboard for your own application. The top navigation bar located in <code>app.component.html</code> is also just a starting template&mdash;customize it to fit your product's flow.
-      </p>
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="kbp-glass-panel" style="padding: 3rem; text-align: center; margin-bottom: 2rem;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+      <div style="width: 48px; height: 48px; border: 4px solid var(--accent-glow); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <p style="font-size: 1.1rem; color: var(--text-secondary);">Fetching model telemetry from backend cache...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage()" class="kbp-banner banner-danger" style="margin-bottom: 2rem;">
+    <strong>Error:</strong> {{ errorMessage() }}
+    <button class="kbp-btn kbp-btn-danger" (click)="fetchData()" style="margin-left: auto; padding: 4px 12px; height: 28px;">Retry</button>
+  </div>
+
+  <!-- Main Content Dashboard -->
+  <div *ngIf="!isLoading() && !errorMessage()" style="display: flex; flex-direction: column; gap: 2rem;">
+    
+    <!-- 1. Filters panel -->
+    <div class="kbp-glass-panel filters-container" style="padding: 1.5rem;">
+      <h3 style="color: var(--accent); margin-bottom: 1.25rem; font-size: 1.1rem;">Interactive Multi-Dimensional Filters</h3>
+      <div class="filters-grid">
+        
+        <!-- Context Length Slider -->
+        <div class="filter-group">
+          <label>Context Length ({{ minContext.toLocaleString() }} - {{ maxContext.toLocaleString() }})</label>
+          <div class="slider-row">
+            <input type="range" class="kbp-range-slider" [min]="globalMinContext" [max]="maxContext" [(ngModel)]="minContext"
+              (ngModelChange)="applyFilters()">
+            <input type="range" class="kbp-range-slider" [min]="minContext" [max]="globalMaxContext" [(ngModel)]="maxContext"
+              (ngModelChange)="applyFilters()">
+          </div>
+        </div>
+        
+        <!-- Output Cost Slider -->
+        <div class="filter-group">
+          <label>Output Cost / Million ({{ minCost | number:'1.2-2' }} - {{ maxCost | number:'1.2-2' }} USD)</label>
+          <div class="slider-row">
+            <input type="range" class="kbp-range-slider" [min]="0" [max]="sliderMaxCost" step="0.1" [(ngModel)]="sliderMinCost"
+              (ngModelChange)="onCostSliderChange()">
+            <input type="range" class="kbp-range-slider" [min]="sliderMinCost" [max]="100" step="0.1" [(ngModel)]="sliderMaxCost"
+              (ngModelChange)="onCostSliderChange()">
+          </div>
+        </div>
+        
+        <!-- Created Date Slider -->
+        <div class="filter-group">
+          <label>Release Date ({{ formatDate(minEpoch) }} - {{ formatDate(maxEpoch) }})</label>
+          <div class="slider-row">
+            <input type="range" class="kbp-range-slider" [min]="globalMinEpoch" [max]="maxEpoch" [(ngModel)]="minEpoch"
+              (ngModelChange)="applyFilters()">
+            <input type="range" class="kbp-range-slider" [min]="minEpoch" [max]="globalMaxEpoch" [(ngModel)]="maxEpoch"
+              (ngModelChange)="applyFilters()">
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div class="kbp-hero-actions">
-      <a href="https://github.com/kronekker/template-project" target="_blank" class="kbp-btn kbp-btn-secondary"
-        style="border-color: rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          style="margin-right: 0.5rem;">
-          <path
-            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-          </path>
-        </svg>
-        View Source on GitHub
-      </a>
+    <!-- 2. Columns Visualizations Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: ECharts Bubble Chart -->
+      <div class="kbp-glass-panel visualizer-card" style="padding: 1.5rem; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 600;">Bubble Timeline Analyzer</h3>
+          <span class="kbp-badge kbp-badge-done">Timeline View</span>
+        </div>
+        <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+          Bubble color maps to <strong>Model Provider</strong>, position matches <strong>Release Date (X)</strong> vs <strong>Log-scale Completion Cost (Y)</strong>, and bubble size scales with <strong>Context Length</strong>.
+        </p>
+        <div class="chart-wrapper">
+          <div echarts [options]="chartOptions()" [autoResize]="true" class="chart-container"></div>
+        </div>
+      </div>
+      
+      <!-- Right Column: AG Grid Model Table -->
+      <div class="kbp-glass-panel visualizer-card" style="padding: 1.5rem; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 600;">Dataset Matrix</h3>
+          <span class="kbp-badge kbp-badge-todo">{{ models().length }} Models Showing</span>
+        </div>
+        <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+          Sort, filter, and analyze the raw dataset matrix of all active OpenRouter LLMs.
+        </p>
+        <div class="grid-wrapper">
+          <ag-grid-angular [class]="themeClass + ' grid-container'" [rowData]="models()" [columnDefs]="colDefs"
+            [defaultColDef]="defaultColDef" [enableCellTextSelection]="true">
+          </ag-grid-angular>
+        </div>
+      </div>
+
     </div>
-  </section>
+
+  </div>
 </div>
+
+<!-- Raw JSON Dialog Modal -->
+<dialog #modelDialog>
+  <div class="modal-header">
+    <h2>Model Details Metadata</h2>
+    <button class="close-btn" (click)="closeModal()">×</button>
+  </div>
+  <pre>{{ selectedModelJson() }}</pre>
+</dialog>

@@ -5,7 +5,8 @@ import os from 'os';
 import {
   LogMessage,
   SystemMetrics,
-  ApiResponse
+  ApiResponse,
+  OpenRouterModel
 } from 'shared';
 
 const app = express();
@@ -49,6 +50,54 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // --- API ROUTES ---
+
+// Cache state for OpenRouter API
+let cachedModels: OpenRouterModel[] | null = null;
+let lastFetched = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
+// GET /api/models
+// Proxies calls to OpenRouter v1 models, caches responses and decorates pricing metrics.
+app.get('/api/models', async (req: Request, res: Response<ApiResponse<OpenRouterModel[]>>) => {
+  try {
+    const now = Date.now();
+    if (!cachedModels || (now - lastFetched > CACHE_DURATION)) {
+      log('info', 'Cache miss: Fetching fresh models list from OpenRouter API...');
+      const response = await fetch('https://openrouter.ai/api/v1/models');
+      if (!response.ok) {
+        throw new Error(`OpenRouter API responded with status ${response.status}`);
+      }
+      
+      const json: any = await response.json();
+      const rawData = json.data || [];
+      
+      // Map raw data and compute cost metrics (per million tokens)
+      cachedModels = rawData.map((m: any) => {
+        const inputCost = parseFloat(m.pricing?.prompt || '0') * 1000000;
+        const outputCost = parseFloat(m.pricing?.completion || '0') * 1000000;
+        const createdDate = new Date(m.created * 1000).toLocaleString();
+        
+        return {
+          ...m,
+          inputCost,
+          outputCost,
+          createdDate
+        };
+      }).filter((m: any) => m.outputCost >= 0);
+      
+      lastFetched = now;
+      log('info', `Successfully cached ${cachedModels!.length} models from OpenRouter.`);
+    } else {
+      log('info', `Serving ${cachedModels.length} models from in-memory cache.`);
+    }
+    
+    res.json({ success: true, data: cachedModels || undefined });
+  } catch (err: any) {
+    log('error', `Failed to fetch models: ${err.message}`);
+    res.status(500).json({ success: false, error: err.message || 'Failed to fetch models' });
+  }
+});
+
 
 // GET /api/metrics
 // This endpoint exists to provide sample telemetry data (hence the 'mockCpu' below). 

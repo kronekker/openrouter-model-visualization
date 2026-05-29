@@ -8,7 +8,7 @@
     "dev:bun": "bun --watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "start:bun": "bun run src/server.ts"
+    "start:bun": "PORT=3001 bun run src/server.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",

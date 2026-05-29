@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { 
   SystemMetrics, 
-  ApiResponse 
+  ApiResponse,
+  OpenRouterModel
 } from 'shared';
 
 @Injectable({
@@ -21,6 +22,17 @@ export class ApiService {
       map(response => {
         if (!response.success || !response.data) {
           throw new Error(response.error || 'Failed to fetch metrics');
+        }
+        return response.data;
+      })
+    );
+  }
+
+  getModels(): Observable<OpenRouterModel[]> {
+    return this.http.get<ApiResponse<OpenRouterModel[]>>(`${this.baseUrl}/models`).pipe(
+      map(response => {
+        if (!response.success || !response.data) {
+          throw new Error(response.error || 'Failed to fetch models');
         }
         return response.data;
       })
